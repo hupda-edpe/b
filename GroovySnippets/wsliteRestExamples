@@ -1,0 +1,32 @@
+
+/**
+ * Created by 3OW.
+ */
+import wslite.rest.*
+
+// a simple http GET example
+def client = new RESTClient("http://188.68.49.73:8080/Unicorn/webapi/REST/EventType/GroovyEventType")
+def response = client.get()
+assert 200 == response.statusCode
+String txt = response.getContentAsString()
+println(txt);
+
+// an unicorn Event example
+def xmlContent = '''<?xml version="1.0" encoding="utf-8"?>
+<GroovyEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="GroovyEventType.xsd">
+\t<testString>SentByGroovy</testString>
+    <testInteger>7</testInteger>
+    <timestamp></timestamp>
+</GroovyEvent>'''
+
+//Post the example Event to Unicorn
+def client_post = new RESTClient("http://188.68.49.73:8080/Unicorn/webapi/REST")
+def response_post = client_post.post(path: "/Event/") {
+    type ContentType.XML
+    text xmlContent
+}
+// check if Unicorn return http status code 200
+assert 200 == response_post.statusCode
+
+//Print the Unicorn response
+println(response_post.getContentAsString());
