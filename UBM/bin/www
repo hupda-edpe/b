@@ -20,7 +20,8 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-
+console.log('Magic happens on port ' + port);
+console.log('Magic happens on port ' + port);
 /**
  * Listen on provided port, on all network interfaces.
  */

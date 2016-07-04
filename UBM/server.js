@@ -24,8 +24,6 @@ app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-var port = process.env.PORT || 8088;        // set our port
-
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 var router = require('./routes/api');

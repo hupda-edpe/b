@@ -6,7 +6,7 @@ var Schema       = mongoose.Schema;
 
 var UnicornSchema   = new Schema({
     ubmTimestamp: Number,
-    jsonPayload: [Schema.Types.Mixed]
-});
+    notificationType: String
+}, { strict: false });
 
 module.exports = mongoose.model('unicorn', UnicornSchema);
