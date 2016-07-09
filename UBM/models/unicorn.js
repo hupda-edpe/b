@@ -5,8 +5,7 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var UnicornSchema   = new Schema({
-    ubmTimestamp: Number,
     notificationType: String
-}, { strict: false });
+}, { strict: false, timestamps: true });
 
 module.exports = mongoose.model('unicorn', UnicornSchema);

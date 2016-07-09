@@ -5,7 +5,7 @@ var express = require('express');
 var jsonQuery = require('json-query');      // json search tool
 var Unicorn     = require('../models/unicorn');
 var mongoose   = require('mongoose');
-    mongoose.connect('mongodb://localhost:27017/ubm'); // connect to our database
+    mongoose.connect('mongodb://localhost:27017/ubmNotificationData'); // connect to our database
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -25,7 +25,7 @@ router.route('/post/:notificationType?')
 // create an Unicorn Notification (POST to http://localhost:8088/api/post)
     .post(function(req, res) {
         var unicorn = new Unicorn();      // create a new instance of the Unicorn model
-        unicorn.ubmTimestamp =   Math.floor(Date.now() / 1000); // set the timestamp for the MongoDB document
+        //unicorn.ubmTimestamp =   Math.floor(Date.now() / 1000); // set the timestamp for the MongoDB document
         var received = JSON.parse(JSON.stringify(req.body)); // parse the received notification to JSON object
         // set the notificationType
         if(req.params.notificationType === undefined) {
