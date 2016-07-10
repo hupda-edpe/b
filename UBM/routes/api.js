@@ -1,11 +1,11 @@
 /**
  * Created by 3OW on 03.07.2016.
  */
+var config = require('../config');
 var express = require('express');
 var jsonQuery = require('json-query');      // json search tool
-var Unicorn     = require('../models/unicorn');
-var mongoose   = require('mongoose');
-    mongoose.connect('mongodb://localhost:27017/ubmNotificationData'); // connect to our database
+var Notification     = require('../models/notifications');
+
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -22,23 +22,23 @@ router.get('/', function(req, res) {
 // ----------------------------------------------------
 router.route('/post/:notificationType?')
 
-// create an Unicorn Notification (POST to http://localhost:8088/api/post)
+// create an Unicorn Notification (POST to http://localhost:8088/api/post/:notificationType?)
     .post(function(req, res) {
-        var unicorn = new Unicorn();      // create a new instance of the Unicorn model
-        //unicorn.ubmTimestamp =   Math.floor(Date.now() / 1000); // set the timestamp for the MongoDB document
+        var notification = new Notification();      // create a new instance of the Unicorn model
+        //notification.ubmTimestamp =   Math.floor(Date.now() / 1000); // set the timestamp for the MongoDB document
         var received = JSON.parse(JSON.stringify(req.body)); // parse the received notification to JSON object
         // set the notificationType
         if(req.params.notificationType === undefined) {
-            unicorn.notificationType = "generic";
+            notification.notificationType = "generic";
         }
         else {
-            unicorn.notificationType = req.params.notificationType;
+            notification.notificationType = req.params.notificationType;
         }
         for (var propName in received) {   // put received JSON data into our mongo document
-            unicorn.set(propName, received[propName]);
+            notification.set(propName, received[propName]);
         }
         // save the notification and check for errors
-        unicorn.save(function(err) {
+        notification.save(function(err) {
             if (err)
                 res.send(err);
 
@@ -47,15 +47,15 @@ router.route('/post/:notificationType?')
     });
 
 
-// on routes that end in /unicorn/nid/:notification_id
+// on routes that end in /api/delete/:notification_id
 // ----------------------------------------------------
 router.route('/delete/:notification_id')
 
     // delete the notification with this id (accessed at DELETE http://localhost:8088/api/delete/:notification_id)
     .delete(function(req, res) {
-        Unicorn.remove({
+        Notification.remove({
             _id: req.params.notification_id
-        }, function(err, unicorn) {
+        }, function(err, notification) {
             if (err)
                 res.send(err);
 
@@ -63,13 +63,13 @@ router.route('/delete/:notification_id')
         });
     });
 
-// on routes that end in /unicorn/search?=:key&?=:value
+// on routes that end in /api/search?=:key&?=:value
 // ----------------------------------------------------
 router.route('/search/')
-    
+
 // get the notification by a specific value in the json payload (accessed at GET http://localhost:8088/api/search?:key=:value&...)
     .get(function(req, res) {
-        Unicorn.find(function(err, notifications) {
+        Notification.find(function(err, notifications) {
             if (err)
                 res.send(err);
             notifications = JSON.parse(JSON.stringify(notifications));

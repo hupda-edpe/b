@@ -1,0 +1,13 @@
+//
+   Created by 3OW on 10.07.2016.
+
+extends layout
+
+block content
+    div.container
+        div.row
+            div.col-sm-6.col-md-4.col-md-offset-4
+                #user
+                    h1.text-center.login-title Welcome #{user.username}. <br />
+
+                        a(href='/signout', class='text-center new-account') Sign Out
