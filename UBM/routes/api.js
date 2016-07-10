@@ -7,13 +7,49 @@ var jsonQuery = require('json-query');      // json search tool
 var Notification     = require('../models/notifications');
 
 
+
+// PASSPORT BASIC AUTH
+var passport = require('passport');
+var BasicStrategy = require('passport-http').BasicStrategy;
+var User = require('../models/user');
+var bCrypt = require('bcryptjs');
+
+passport.use(new BasicStrategy({
+        passReqToCallback : false
+    },
+    function(username, password, done) {
+        // check in mongo if a user with username exists or not
+        User.findOne({ 'username' :  username },
+            function(err, user) {
+                // In case of any error, return using the done method
+                if (err)
+                    return done(err);
+                if (!user){
+                    return done(null, false);
+                }
+                if (!isValidPassword(user, password)){
+                    return done(null, false);
+                }
+                // If User and password both match, return user from done method
+                // which will be treated like success
+                return done(null, user);
+            }
+        );
+    })
+);
+
+var isValidPassword = function(user, password){
+    return bCrypt.compareSync(password, user.password);
+};
+
+
+
 // ROUTES FOR OUR API
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
-
 // test route to make sure everything is working (accessed at GET http://localhost:8088/api)
 router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });
+    res.json({ message: 'hooray! welcome to our api! The API uses BASIC AUTH!' });
 });
 
 // more routes for our API will happen here
@@ -23,7 +59,7 @@ router.get('/', function(req, res) {
 router.route('/post/:notificationType?')
 
 // create an Unicorn Notification (POST to http://localhost:8088/api/post/:notificationType?)
-    .post(function(req, res) {
+    .post(passport.authenticate('basic', { session: false }), function(req, res) {
         var notification = new Notification();      // create a new instance of the Unicorn model
         //notification.ubmTimestamp =   Math.floor(Date.now() / 1000); // set the timestamp for the MongoDB document
         var received = JSON.parse(JSON.stringify(req.body)); // parse the received notification to JSON object
@@ -52,7 +88,7 @@ router.route('/post/:notificationType?')
 router.route('/delete/:notification_id')
 
     // delete the notification with this id (accessed at DELETE http://localhost:8088/api/delete/:notification_id)
-    .delete(function(req, res) {
+    .delete(passport.authenticate('basic', { session: false }), function(req, res) {
         Notification.remove({
             _id: req.params.notification_id
         }, function(err, notification) {
@@ -66,9 +102,9 @@ router.route('/delete/:notification_id')
 // on routes that end in /api/search?=:key&?=:value
 // ----------------------------------------------------
 router.route('/search/')
-
+    
 // get the notification by a specific value in the json payload (accessed at GET http://localhost:8088/api/search?:key=:value&...)
-    .get(function(req, res) {
+    .get(passport.authenticate('basic', { session: false }), function(req, res) {
         Notification.find(function(err, notifications) {
             if (err)
                 res.send(err);
