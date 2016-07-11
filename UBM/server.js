@@ -37,7 +37,7 @@ var passport = require('passport');
 var expressSession = require('express-session');
 const MongoStore = require('connect-mongo')(expressSession);
 // TODO generate random secret string
-app.use(expressSession({secret: 'mySecretKey', resave: true, saveUninitialized: true, cookie: { maxAge: 86400000 }, store: new MongoStore({ mongooseConnection: mongoose.connection })}));
+app.use(expressSession({secret: 'mySecretKey', resave: true, saveUninitialized: true, cookie: { maxAge: config.sessionLength }, store: new MongoStore({ mongooseConnection: mongoose.connection })}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());

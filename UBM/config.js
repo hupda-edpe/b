@@ -16,4 +16,8 @@ config.dbURI = "mongodb://localhost:27017/ubm";
 // Enable / Disable Basic auth (API)
 config.basicAuth = true;
 
+
+// Set session expiration time
+config.sessionLength = 86400000;
+
 module.exports = config;
