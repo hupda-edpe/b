@@ -3,9 +3,11 @@
 ### requirements
 NodeJs v4.4.7+
 
+access to a MongoDB 
+
 ### installation
 clone from repository and run ```npm install ```
 
-open /bin/www and edit ```var port = normalizePort(process.env.PORT || '8088'); ``` to set the port the app shoud run on
+open "config.js" and set the port and DB
 
-start the app by running "www" inside the bin directory
+run the app via ```npm start ```
