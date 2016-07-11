@@ -10,9 +10,10 @@ config.port =  '8088';
 
 // Set the DB URI
 // example: config.dbURI = "mongodb://<dbuser>:<dbpassword>@<server>:<port>/<dbName>"
-config.dbURI = "mongodb://localhost:27017/ubm"
+config.dbURI = "mongodb://localhost:27017/ubm";
 
 
-
+// Enable / Disable Basic auth (API)
+config.basicAuth = true;
 
 module.exports = config;
