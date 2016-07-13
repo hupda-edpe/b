@@ -14,8 +14,10 @@ config.dbURI = "mongodb://localhost:27017/ubm";
 
 
 // Enable / Disable Basic auth (API)
-config.basicAuth = true;
+config.basicAuth = false;
 
+// Enable Unicorn 1.5 compatibility (basic auth REST notifications not implemented in Unicorn 1.5)
+config.unicornExemption = true;
 
 // Set session expiration time
 config.sessionLength = 86400000;

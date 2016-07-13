@@ -56,32 +56,60 @@ if (config.basicAuth == true) {
 
 // on routes that end in /post
 // ----------------------------------------------------
-    router.route('/post/:notificationType?')
+   // Unicorn v1.5 compatibility
+    if (config.unicornExemption == false) {
+        router.route('/post/:notificationType?')
 
-    // create an Unicorn Notification (POST to http://localhost:8088/api/post/:notificationType?)
-        .post(passport.authenticate('basic', {session: false}), function (req, res) {
-            var notification = new Notification();      // create a new instance of the Unicorn model
-            //notification.ubmTimestamp =   Math.floor(Date.now() / 1000); // set the timestamp for the MongoDB document
-            var received = JSON.parse(JSON.stringify(req.body)); // parse the received notification to JSON object
-            // set the notificationType
-            if (req.params.notificationType === undefined) {
-                notification.notificationType = "generic";
-            }
-            else {
-                notification.notificationType = req.params.notificationType;
-            }
-            for (var propName in received) {   // put received JSON data into our mongo document
-                notification.set(propName, received[propName]);
-            }
-            // save the notification and check for errors
-            notification.save(function (err) {
-                if (err)
-                    res.send(err);
+        // create an Unicorn Notification (POST to http://localhost:8088/api/post/:notificationType?)
+            .post(passport.authenticate('basic', {session: false}), function (req, res) {
+                var notification = new Notification();      // create a new instance of the Unicorn model
+                //notification.ubmTimestamp =   Math.floor(Date.now() / 1000); // set the timestamp for the MongoDB document
+                var received = JSON.parse(JSON.stringify(req.body)); // parse the received notification to JSON object
+                // set the notificationType
+                if (req.params.notificationType === undefined) {
+                    notification.notificationType = "generic";
+                }
+                else {
+                    notification.notificationType = req.params.notificationType;
+                }
+                for (var propName in received) {   // put received JSON data into our mongo document
+                    notification.set(propName, received[propName]);
+                }
+                // save the notification and check for errors
+                notification.save(function (err) {
+                    if (err)
+                        res.send(err);
 
-                res.json({message: 'Notification created!'});
+                    res.json({message: 'Notification created!'});
+                });
             });
-        });
+    } else {
+        router.route('/post/:notificationType?')
 
+        // create an Unicorn Notification (POST to http://localhost:8088/api/post/:notificationType?)
+            .post(function (req, res) {
+                var notification = new Notification();      // create a new instance of the Unicorn model
+                //notification.ubmTimestamp =   Math.floor(Date.now() / 1000); // set the timestamp for the MongoDB document
+                var received = JSON.parse(JSON.stringify(req.body)); // parse the received notification to JSON object
+                // set the notificationType
+                if (req.params.notificationType === undefined) {
+                    notification.notificationType = "generic";
+                }
+                else {
+                    notification.notificationType = req.params.notificationType;
+                }
+                for (var propName in received) {   // put received JSON data into our mongo document
+                    notification.set(propName, received[propName]);
+                }
+                // save the notification and check for errors
+                notification.save(function (err) {
+                    if (err)
+                        res.send(err);
+
+                    res.json({message: 'Notification created!'});
+                });
+            });
+    }
 
 // on routes that end in /api/delete/:notification_id
 // ----------------------------------------------------
@@ -121,9 +149,21 @@ if (config.basicAuth == true) {
                         }
                     }
                     else if (req.query.hasOwnProperty(propName)) {
+                        if (req.query[propName].toString().charAt(0) == '<') {
+                            notifications = jsonQuery('[*' + propName.toString() + '<=' + req.query[propName].toString().slice(1, req.query[propName].toString().length) + ']', {
+                                data: notifications
+                            }).value;
+                        }
+                        else if (req.query[propName].toString().charAt(0) == '>') {
+                            notifications = jsonQuery('[*' + propName.toString() + '>=' + req.query[propName].toString().slice(1, req.query[propName].toString().length) + ']', {
+                                data: notifications
+                            }).value;
+                        }
+                        else {
                         notifications = jsonQuery('[*' + propName.toString() + '=' + req.query[propName].toString() + ']', {
                             data: notifications
                         }).value;
+                        }
                     }
                 }
                 res.json(notifications);
@@ -208,9 +248,21 @@ if (config.basicAuth == true) {
                         }
                     }
                     else if (req.query.hasOwnProperty(propName)) {
-                        notifications = jsonQuery('[*' + propName.toString() + '=' + req.query[propName].toString() + ']', {
-                            data: notifications
-                        }).value;
+                        if (req.query[propName].toString().charAt(0) == '<') {
+                            notifications = jsonQuery('[*' + propName.toString() + '<=' + req.query[propName].toString().slice(1, req.query[propName].toString().length) + ']', {
+                                data: notifications
+                            }).value;
+                        }
+                        else if (req.query[propName].toString().charAt(0) == '>') {
+                            notifications = jsonQuery('[*' + propName.toString() + '>=' + req.query[propName].toString().slice(1, req.query[propName].toString().length) + ']', {
+                                data: notifications
+                            }).value;
+                        }
+                        else {
+                            notifications = jsonQuery('[*' + propName.toString() + '=' + req.query[propName].toString() + ']', {
+                                data: notifications
+                            }).value;
+                        }
                     }
                 }
                 res.json(notifications);
