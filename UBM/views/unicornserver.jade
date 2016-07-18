@@ -1,0 +1,33 @@
+extends layout
+block content
+    a(href="/home") Home
+    div.container
+        #user
+            #server
+                h1.text-center.login-title Welcome #{user.username}. <br /><br />
+                    - if (typeof(server[0]) === 'undefined'){
+                        p='no server found'
+                    -}
+                    ul
+                    each entry in server
+                        p= 'Name: ' + entry.ServerName
+                            <br/>
+                        p= 'Path: '  +entry.ServerPath
+                            span
+                                form(method='POST', action='/unicornserver/'+entry._id)
+                                    button(type='submit', value='Delete') Delete
+
+
+
+
+    div.container
+        h1 Add new Server
+            form(method="post" action="/unicornserver")
+                .form-group
+                    label Name:
+                        input(type="text", name="serverName", value=serverName)
+                .form-group
+                    label Path:
+                        input(type="text", name="serverPath", value=serverPath)
+                        input(type="submit", value="Save")
+

@@ -1,0 +1,50 @@
+extends layout
+block content
+    a(href="/home") Home
+    div.container
+        #user
+        #event
+        #server
+            h1.text-center.login-title Welcome #{user.username}. <br/><br/>
+            h1.text-center.login-title Send Event to Unicorn <br/>
+
+                form(method="post" action="/sendevent")
+                    .form-group
+                        label Select Server <br/>
+                        select(name='serverselect')
+                            each entry, i in server
+                                option(value=i, selected=entry._id) #{entry.ServerName}
+                    .form-group
+                        p <br />
+                        label Select Event <br/>
+                        select(name='eventselect')
+                            each entry, i in event
+                                option(value=i, selected=entry._id)  #{entry.eventName}
+                        p <br/>
+                        input(type="submit", value="Send")
+
+    div.container
+        p <br/>
+        ul
+            each entry in event
+                p= 'Name: ' + entry.eventName
+                p= 'XML: '
+                textarea(name="eventXml", cols="80", rows="15")
+                   |#{entry.eventXml}
+                span
+                    form(method='POST', action='/eventtypes/' + entry._id)
+                        button(type='submit', value='Delete') Delete
+                p <br/>
+
+    div.container
+        p <br/> <br/> <br/><br/> <br/> <br/>
+    div.container
+        h1 Add new EventType
+            form(method="post" action="/eventtypes")
+                .form-group
+                    label Name:
+                        input(type="text", name="eventName")
+                .form-group
+                    label Event:
+                        textarea(name="eventXml", cols="40", rows="5")
+                        input(type="submit", value="Save")

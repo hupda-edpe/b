@@ -47,7 +47,6 @@ initPassport(passport);
 
 
 // REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
 var router = require('./routes/api');
 app.use('/api', router);
 var routes = require('./routes/index')(passport);
