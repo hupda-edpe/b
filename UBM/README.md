@@ -2,8 +2,7 @@
 
 ### requirements
 NodeJs v4.4.7+
-
-access to a MongoDB 
+access to a mongoDB 
 
 ### installation
 clone from repository and run ```npm install ```
@@ -13,7 +12,7 @@ edit "config.js" according to your setup
 run the app via ```npm start ```
 
 ###  configuration
-config.js is the central config file
+config.js is the central config file; 
 the following parameters are available:
 - ```config.port ``` set the port the app should listen on
 - ```config.dbURI ``` enter the address of the mongoDB  
