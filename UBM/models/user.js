@@ -1,5 +1,5 @@
 /**
- * Created by 3OW on 09.07.2016.
+ * the user model
  */
 var mongoose = require('mongoose');
 

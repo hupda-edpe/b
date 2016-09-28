@@ -1,3 +1,6 @@
+/**
+ * handles the index route
+ */
 var express = require('express');
 var router = express.Router();
 var Server = require('../models/unicornServer');
@@ -11,7 +14,7 @@ var isAuthenticated = function (req, res, next) {
     return next();
   // if the user is not authenticated then redirect him to the login page
   res.redirect('/');
-}
+};
 
 module.exports = function(passport){
 
@@ -58,6 +61,7 @@ module.exports = function(passport){
         res.redirect('/unicornserver');
       });
   });
+
   /* Delete UnicornServer */
   router.post('/unicornserver/:serverId', isAuthenticated, function(req, res) {
     Server.remove({
@@ -105,6 +109,6 @@ module.exports = function(passport){
     res.redirect('/');
   });
 
-
+// TODO implement "RESTNOTIFICATIONS" -> dropdown for Unicorn Server and EventTypes => register notification for selected EvebtType at the selected Unicorn instance
   return router;
 }

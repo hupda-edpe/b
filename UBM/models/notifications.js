@@ -1,5 +1,5 @@
 /**
- * Created by 3OW on 01.07.2016.
+ * a model for notifications (returned by Unicorn)
  */
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;

@@ -1,5 +1,5 @@
 /**
- * Created by 3OW
+ *  a model to store Unicorn instances
  */
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;

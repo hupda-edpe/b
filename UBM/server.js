@@ -1,7 +1,6 @@
 /**
- * Created by 3OW on 01.07.2016.
- */
-// server.js
+    Our Server
+ **/
 
 // BASE SETUP
 // =============================================================================
@@ -89,7 +88,5 @@ app.use(function(err, req, res, next) {
 
 // START THE SERVER
 // =============================================================================
-//app.listen(port);
 //console.log('Magic happens on port ' + port);
-
 module.exports = app;

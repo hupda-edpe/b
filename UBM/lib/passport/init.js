@@ -1,5 +1,5 @@
 /**
- * Created by 3OW on 10.07.2016.
+ * initialize passport
  */
 var login = require('./login');
 var signup = require('./signup');

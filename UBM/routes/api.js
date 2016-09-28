@@ -1,5 +1,5 @@
 /**
- * Created by 3OW on 03.07.2016.
+ * Provides the UBM API
  */
 var config = require('../config');
 var express = require('express');
@@ -47,12 +47,12 @@ if (config.basicAuth == true) {
 // ROUTES FOR OUR API
 // =============================================================================
     var router = express.Router();              // get an instance of the express Router
-// test route to make sure everything is working (accessed at GET http://localhost:8088/api)
+// test route to make sure everything is working (accessed at GET http://localhost:[port]/api)
     router.get('/', function (req, res) {
         res.json({message: 'hooray! welcome to our api! The API uses BASIC AUTH!'});
     });
 
-// more routes for our API will happen here
+
 
 // on routes that end in /post
 // ----------------------------------------------------
@@ -60,7 +60,7 @@ if (config.basicAuth == true) {
     if (config.unicornExemption == false) {
         router.route('/post/:notificationType?')
 
-        // create an Unicorn Notification (POST to http://localhost:8088/api/post/:notificationType?)
+        // create an Unicorn Notification (POST to http://localhost:[port]/api/post/:notificationType?)
             .post(passport.authenticate('basic', {session: false}), function (req, res) {
                 var notification = new Notification();      // create a new instance of the Unicorn model
                 //notification.ubmTimestamp =   Math.floor(Date.now() / 1000); // set the timestamp for the MongoDB document
@@ -86,10 +86,9 @@ if (config.basicAuth == true) {
     } else {
         router.route('/post/:notificationType?')
 
-        // create an Unicorn Notification (POST to http://localhost:8088/api/post/:notificationType?)
+        // create an Unicorn Notification (POST to http://localhost:[port]/api/post/:notificationType?)
             .post(function (req, res) {
                 var notification = new Notification();      // create a new instance of the Unicorn model
-                //notification.ubmTimestamp =   Math.floor(Date.now() / 1000); // set the timestamp for the MongoDB document
                 var received = JSON.parse(JSON.stringify(req.body)); // parse the received notification to JSON object
                 // set the notificationType
                 if (req.params.notificationType === undefined) {
@@ -115,7 +114,7 @@ if (config.basicAuth == true) {
 // ----------------------------------------------------
     router.route('/delete/:notification_id')
 
-    // delete the notification with this id (accessed at DELETE http://localhost:8088/api/delete/:notification_id)
+    // delete the notification with this id (accessed at DELETE http://localhost:[port]/api/delete/:notification_id)
         .delete(passport.authenticate('basic', {session: false}), function (req, res) {
             Notification.remove({
                 _id: req.params.notification_id
@@ -131,7 +130,7 @@ if (config.basicAuth == true) {
 // ----------------------------------------------------
     router.route('/search/')
 
-    // get the notification by a specific value in the json payload (accessed at GET http://localhost:8088/api/search?:key=:value&...)
+    // get the notification by a specific value in the json payload (accessed at GET http://localhost:[port]/api/search?:key=:value&...)
         .get(passport.authenticate('basic', {session: false}), function (req, res) {
             Notification.find(function (err, notifications) {
                 if (err)
@@ -174,21 +173,19 @@ if (config.basicAuth == true) {
 // ROUTES FOR OUR API
 // =============================================================================
     var router = express.Router();              // get an instance of the express Router
-// test route to make sure everything is working (accessed at GET http://localhost:8088/api)
+// test route to make sure everything is working (accessed at GET http://localhost:[port]/api)
     router.get('/', function (req, res) {
-        res.json({message: 'hooray! welcome to our api! The API uses BASIC AUTH!'});
+        res.json({message: 'hooray! welcome to our api!'});
     });
 
-// more routes for our API will happen here
 
 // on routes that end in /post
 // ----------------------------------------------------
     router.route('/post/:notificationType?')
 
-    // create an Unicorn Notification (POST to http://localhost:8088/api/post/:notificationType?)
+    // create an Unicorn Notification (POST to http://localhost:[port]/api/post/:notificationType?)
         .post(function (req, res) {
             var notification = new Notification();      // create a new instance of the Unicorn model
-            //notification.ubmTimestamp =   Math.floor(Date.now() / 1000); // set the timestamp for the MongoDB document
             var received = JSON.parse(JSON.stringify(req.body)); // parse the received notification to JSON object
             // set the notificationType
             if (req.params.notificationType === undefined) {
@@ -214,7 +211,7 @@ if (config.basicAuth == true) {
 // ----------------------------------------------------
     router.route('/delete/:notification_id')
 
-    // delete the notification with this id (accessed at DELETE http://localhost:8088/api/delete/:notification_id)
+    // delete the notification with this id (accessed at DELETE http://localhost:[port]/api/delete/:notification_id)
         .delete(function (req, res) {
             Notification.remove({
                 _id: req.params.notification_id
@@ -230,7 +227,7 @@ if (config.basicAuth == true) {
 // ----------------------------------------------------
     router.route('/search/')
 
-    // get the notification by a specific value in the json payload (accessed at GET http://localhost:8088/api/search?:key=:value&...)
+    // get the notification by a specific value in the json payload (accessed at GET http://localhost:[port]/api/search?:key=:value&...)
         .get(function (req, res) {
             Notification.find(function (err, notifications) {
                 if (err)

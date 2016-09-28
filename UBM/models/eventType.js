@@ -1,5 +1,5 @@
 /**
- * Created by 3OW
+ * model for eventTypes
  */
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;

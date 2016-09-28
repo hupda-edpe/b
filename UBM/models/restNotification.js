@@ -1,5 +1,5 @@
 /**
- * Created by 3OW
+ * A model for notifications that can be registered to Unicorn or unregistered later
  */
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;

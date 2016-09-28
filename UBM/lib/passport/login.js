@@ -1,5 +1,5 @@
 /**
- * Created by 3OW on 09.07.2016.
+ * handle login process
  */
 
 var LocalStrategy   = require('passport-local').Strategy;

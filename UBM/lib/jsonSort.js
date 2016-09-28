@@ -1,5 +1,5 @@
 /**
- * Created by 3OW on 11.07.2016.
+ * a function that sorts an array of JSON objects
  */
 // Sort an array of json objects
 exports.jsonSort = function(jsonAttribute, reverse, primer){

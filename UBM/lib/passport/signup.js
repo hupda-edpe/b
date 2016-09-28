@@ -1,5 +1,5 @@
 /**
- * Created by 3OW on 10.07.2016.
+ * handle signup
  */
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../../models/user');
@@ -57,4 +57,4 @@ module.exports = function(passport){
         return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
     }
 
-}
+};

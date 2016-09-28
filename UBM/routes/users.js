@@ -1,3 +1,7 @@
+/**
+ Provides a list of our users
+ **/
+//TODO implement users list
 var express = require('express');
 var router = express.Router();
 
