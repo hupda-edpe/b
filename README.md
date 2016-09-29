@@ -8,6 +8,7 @@ this project provides interaction between Bonita BPM and Unicorn
 - Connectors: 2 Connectors that can be imported into the Bonita BPM Studio - attach them to activties and cofigure them to either send events to Unicorn or fetch query notifications created by Unicorn and sent to UBM
 
     PostEvent-impl-1.0.0.zip - connector to send events to Unicorn
+    
     ReactOnEvent-impl-1.0.0.zip - connector to poll query notifications from UBM
 
 # Connectors
